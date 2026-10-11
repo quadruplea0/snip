@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: SITE_NAME,
   description:
-    "Remove backgrounds from images right in your browser. Full resolution, no watermark, no account.",
+    "Remove backgrounds from images right in your browser. Full resolution, no watermark and no account.",
 };
 
 const themeScript = `(function(){try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.remove('dark')}}catch(e){}})()`;
