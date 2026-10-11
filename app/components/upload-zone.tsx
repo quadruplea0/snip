@@ -145,7 +145,6 @@ export default function UploadZone() {
   }
 
   const active = MODELS.find((m) => m.id === model) ?? MODELS[0];
-  const activeDetail = device ? device.label : "detecting device…";
   const shown =
     status === "done" && view === "result" && resultUrl ? resultUrl : originalUrl;
 
@@ -310,7 +309,8 @@ export default function UploadZone() {
                 {m.label}
               </span>
               <span className="hidden text-[11px] text-muted sm:inline">
-                {model === m.id ? activeDetail : m.detail}
+                {m.detail}
+                {model === m.id && device ? ` · ${device.label}` : ""}
               </span>
             </button>
           ))}
