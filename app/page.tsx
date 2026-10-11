@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./components/theme-toggle";
 import UploadZone from "./components/upload-zone";
@@ -20,6 +23,17 @@ const SPEC: [string, string][] = [
 ];
 
 export default function Home() {
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+
+  useEffect(() => {
+    if (!privacyOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPrivacyOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [privacyOpen]);
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="border-b border-line">
@@ -44,7 +58,7 @@ export default function Home() {
       <main className="flex-1 px-5 py-10 sm:py-14">
         <div className="mx-auto w-full max-w-3xl space-y-9">
           <Panel label="main" className="px-5 py-8 sm:px-8 sm:py-10">
-            <h1 className="text-3xl font-medium tracking-tight sm:text-4xl">
+            <h1 className="text-3xl font-medium tracking-tight sm:text-4xl" style={{ fontFamily: '"Cascadia Mono", ui-monospace, SFMono-Regular, Menlo, monospace' }}>
               free background remover
               <span className="animate-blink ml-1 inline-block h-[0.7em] w-[0.5ch] bg-foreground align-[-0.05em]" />
             </h1>
@@ -106,9 +120,44 @@ export default function Home() {
             <a href="#notes" className="transition-colors hover:text-foreground">
               notes
             </a>
+            <button
+              onClick={() => setPrivacyOpen(true)}
+              className="transition-colors hover:text-foreground"
+            >
+              privacy
+            </button>
           </nav>
         </div>
       </footer>
+
+      {privacyOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-background/40 p-4"
+          onClick={() => setPrivacyOpen(false)}
+        >
+          <div
+            className="w-full max-w-lg border border-line bg-background p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-muted">
+                privacy
+              </p>
+              <button
+                onClick={() => setPrivacyOpen(false)}
+                className="text-[13px] text-muted transition-colors hover:text-foreground"
+              >
+                close ✕
+              </button>
+            </div>
+            <div className="mt-4 space-y-3 text-[13px] leading-relaxed">
+              <p>
+                Images you upload are not sent to any server, only kept on your device. No accounts, limits or analytics are sent anywhere. Everything is kept on device, model file, theme, etc. You can open png, jpeg/jpg, webp, or bmp files that are up to 32MB in size, and download the result as a png. Upload using the Dialog or by pasting the image inside this tab. RMBG-1.4 By BriaAI and contributors, and BiRefNet by Peng Zheng and contributors.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

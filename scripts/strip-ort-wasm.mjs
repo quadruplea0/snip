@@ -1,7 +1,7 @@
 import { readdir, unlink } from "node:fs/promises";
 import { join } from "node:path";
 
-// transformers.js points onnxruntime-web at the jsdelivr cdn for wasm
+//jsdelivr cdn
 const mediaDir = join(process.cwd(), ".open-next", "assets", "_next", "static", "media");
 
 let removed = 0;
